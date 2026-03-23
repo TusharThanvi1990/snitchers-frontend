@@ -19,7 +19,6 @@ export default function FloatingHearts({ count = 12 }: FloatingHeartsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hearts, setHearts] = useState<HeartData[]>([]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     // Generate random hearts on mount
     const generatedHearts: HeartData[] = [...Array(count)].map(() => ({
@@ -27,6 +26,7 @@ export default function FloatingHearts({ count = 12 }: FloatingHeartsProps) {
       top: Math.random() * 100,
       left: Math.random() * 100,
     }));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHearts(generatedHearts);
   }, [count]);
 

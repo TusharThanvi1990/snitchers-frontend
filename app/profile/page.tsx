@@ -17,7 +17,6 @@ interface User {
 export default function ProfilePage() {
   const [user, setUser] = useState<User | null>(null);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (!storedUser) {
@@ -26,6 +25,7 @@ export default function ProfilePage() {
     }
     try {
       const parsedUser = JSON.parse(storedUser);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUser(parsedUser);
     } catch {
       window.location.href = '/login';
