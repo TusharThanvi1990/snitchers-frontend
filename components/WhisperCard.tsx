@@ -68,9 +68,6 @@ export default function WhisperCard({ id, content, college, branch, timestamp, l
           <button className={styles.actionBtn} onClick={() => setIsExpanded(true)}>
             <MessageCircle size={20} /> <span>{commentsCount}</span>
           </button>
-          <button className={styles.actionBtn}>
-            <Share2 size={20} />
-          </button>
         </div>
       </div>
 
