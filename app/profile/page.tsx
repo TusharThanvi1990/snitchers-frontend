@@ -1,18 +1,32 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { User, School, BookOpen, Heart, LogOut, Sparkles } from 'lucide-react';
+import { School, BookOpen, Heart, LogOut, Sparkles } from 'lucide-react';
 import styles from './profile.module.css';
 import FloatingHearts from '@/components/FloatingHearts';
 
+interface User {
+  _id: string;
+  anonymousName: string;
+  college?: string;
+  branch?: string;
+  interests?: string[];
+  likedWhispers?: string[];
+}
+
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else {
+    if (!storedUser) {
+      window.location.href = '/login';
+      return;
+    }
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+    } catch {
       window.location.href = '/login';
     }
   }, []);

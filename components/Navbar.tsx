@@ -3,11 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Ghost, User as UserIcon, LogIn, Heart } from 'lucide-react';
+import { Ghost, User as UserIcon, Heart } from 'lucide-react';
 import styles from './Navbar.module.css';
 
+interface User {
+  _id?: string;
+  anonymousName?: string;
+}
+
 export default function Navbar() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {

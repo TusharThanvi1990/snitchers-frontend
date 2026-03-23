@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { X, Send, Sparkles, Target } from 'lucide-react';
+import { X, Sparkles, Target } from 'lucide-react';
 import styles from '../app/whispers/whispers.module.css';
 
 interface CreateWhisperModalProps {

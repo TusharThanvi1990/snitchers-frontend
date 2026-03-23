@@ -33,7 +33,7 @@ export default function Hero() {
       <div className={styles.titleContainer}>
         <h1 className={styles.title} ref={titleRef}>Snitchers</h1>
         <p className={styles.subtitle} ref={subtitleRef}>
-          Whisper your heart's secrets where only the shadows listen. 
+          Whisper your heart&rsquo;s secrets where only the shadows listen. 
           Find your college spark, anonymously.
         </p>
       </div>

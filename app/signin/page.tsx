@@ -84,7 +84,7 @@ export default function SignInPage() {
       } else {
         alert(data.message);
       }
-    } catch (error) {
+    } catch {
       alert('Registration failed. Is the backend running?');
     } finally {
       setLoading(false);
@@ -165,7 +165,7 @@ export default function SignInPage() {
 
           {step === 2 && (
             <div className={styles.inputGroup}>
-              <label className={styles.label}>What's your Branch/Field?</label>
+              <label className={styles.label}>What&rsquo;s your Branch/Field?</label>
               <input 
                 type="text" 
                 className={styles.input} 

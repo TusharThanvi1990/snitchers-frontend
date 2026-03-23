@@ -34,7 +34,7 @@ export default function LoginPage() {
       } else {
         setError(data.message);
       }
-    } catch (err) {
+    } catch {
       setError('Connection failed. Is the shadows server running?');
     } finally {
       setLoading(false);

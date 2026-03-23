@@ -9,12 +9,29 @@ import WhisperCard from '@/components/WhisperCard';
 import FloatingHearts from '@/components/FloatingHearts';
 import CreateWhisperModal from '@/components/CreateWhisperModal';
 
+interface Whisper {
+  _id: string;
+  content: string;
+  user?: { college?: string; branch?: string; anonymousName?: string };
+  targetPerson?: string;
+  createdAt: string;
+  likesCount: number;
+  commentsCount?: number;
+  comments?: string[];
+}
+
+interface User {
+  _id?: string;
+  id?: string;
+  likedWhispers?: string[];
+}
+
 export default function WhispersPage() {
-  const [whispers, setWhispers] = useState<any[]>([]);
-  const [filteredWhispers, setFilteredWhispers] = useState<any[]>([]);
+  const [whispers, setWhispers] = useState<Whisper[]>([]);
+  const [filteredWhispers, setFilteredWhispers] = useState<Whisper[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
