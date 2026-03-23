@@ -32,7 +32,8 @@ export default function WhispersPage() {
   const fetchWhispers = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/whispers');
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/whispers`);
       const data = await res.json();
       setWhispers(data);
       setFilteredWhispers(data);
@@ -65,7 +66,8 @@ export default function WhispersPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/whispers/${id}/like`, {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/whispers/${id}/like`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user._id })
@@ -91,7 +93,8 @@ export default function WhispersPage() {
 
   const handleComment = async (id: string, text: string) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/whispers/${id}/comment`, {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/whispers/${id}/comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text })

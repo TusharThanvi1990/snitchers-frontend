@@ -36,7 +36,8 @@ export default function CreateWhisperModal({ onClose, onSuccess }: CreateWhisper
         return;
       }
 
-      const res = await fetch('http://localhost:5000/api/whispers', {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/whispers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

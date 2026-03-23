@@ -36,7 +36,8 @@ export default function SignInPage() {
   const fetchRandomName = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/auth/generate-name');
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/auth/generate-name`);
       const data = await res.json();
       setFormData(prev => ({ ...prev, anonymousName: data.name }));
     } catch (error) {
@@ -69,7 +70,8 @@ export default function SignInPage() {
   const handleRegister = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/auth/register', {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

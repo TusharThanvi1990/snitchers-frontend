@@ -19,7 +19,8 @@ export default function LoginPage() {
     try {
       setLoading(true);
       setError('');
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const res = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
