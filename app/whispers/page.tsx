@@ -17,7 +17,7 @@ interface Whisper {
   createdAt: string;
   likesCount: number;
   commentsCount?: number;
-  comments?: string[];
+  comments?: { text: string; createdAt: string }[];
 }
 
 interface User {
