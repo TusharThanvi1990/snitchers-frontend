@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { ChatProvider } from "@/context/ChatContext";
+import ChatWidgetWrapper from "@/components/Chat/ChatWidgetWrapper";
 
 export const metadata: Metadata = {
   title: "Snitchers | Anonymous College Confessions",
@@ -15,12 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="main-container">
-          <Navbar />
-          <main className="content-wrapper">
-            {children}
-          </main>
-        </div>
+        <ChatProvider>
+          <div className="main-container">
+            <Navbar />
+            <main className="content-wrapper">
+              {children}
+            </main>
+            <ChatWidgetWrapper />
+          </div>
+        </ChatProvider>
       </body>
     </html>
   );

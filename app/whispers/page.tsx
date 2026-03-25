@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef, Suspense } from 'react';
+import React, { useEffect, useState, useRef, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, PlusCircle } from 'lucide-react';
@@ -10,25 +10,7 @@ import WhisperCard from '@/components/WhisperCard';
 import FloatingHearts from '@/components/FloatingHearts';
 import CreateWhisperModal from '@/components/CreateWhisperModal';
 
-interface Whisper {
-  _id: string;
-  content: string;
-  user?: { college?: string; branch?: string; anonymousName?: string };
-  targetPerson?: string;
-  createdAt: string;
-  likesCount: number;
-  commentsCount?: number;
-  comments?: { text: string; createdAt: string }[];
-  isFlagged?: boolean;
-}
-
-interface User {
-  _id?: string;
-  id?: string;
-  likedWhispers?: string[];
-  role?: string;
-  college?: string;
-}
+import { User, Whisper } from '@/types';
 
 function WhispersContent() {
   const searchParams = useSearchParams();
@@ -37,7 +19,15 @@ function WhispersContent() {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
+        try { return JSON.parse(storedUser); } catch { return null; }
+      }
+    }
+    return null;
+  });
   const [showModal, setShowModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const gridIdRef = useRef<string>('');
@@ -58,18 +48,7 @@ function WhispersContent() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
-        setUser(JSON.parse(storedUser));
-      }
-    } catch (error) {
-      console.error('Failed to parse user from localStorage:', error);
-    }
-  }, []);
-
-  const fetchWhispers = async () => {
+  const fetchWhispers = useCallback(async () => {
     try {
       setLoading(true);
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
@@ -82,11 +61,14 @@ function WhispersContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchWhispers();
-  }, []);
+    const timer = setTimeout(() => {
+      fetchWhispers();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchWhispers]);
 
   useEffect(() => {
     const filtered = whispers.filter(w => 
@@ -271,6 +253,7 @@ function WhispersContent() {
               isLiked={user?.likedWhispers?.includes(whisper._id)}
               targetPerson={whisper.targetPerson}
               anonymousName={whisper.user?.anonymousName}
+              creatorId={whisper.user?._id || whisper.user?.id}
               role={user?.role}
               userCollege={user?.college}
               onLike={handleLike}

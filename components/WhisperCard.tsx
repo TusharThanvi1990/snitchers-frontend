@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Target, Quote, X, Send, Trash2, Flag } from 'lucide-react';
+import { Heart, MessageCircle, Target, Quote, X, Send, Trash2, Flag, Flame } from 'lucide-react';
 import styles from '@/app/whispers/whispers.module.css';
 
 interface WhisperCardProps {
@@ -16,18 +16,38 @@ interface WhisperCardProps {
   anonymousName?: string;
   role?: string;
   userCollege?: string;
+  creatorId?: string;
   onLike: (id: string) => void;
   onComment: (id: string, text: string) => void;
   onDelete?: (id: string) => void;
   onFlag?: (id: string) => void;
 }
 
+import { useChat } from '@/context/ChatContext';
+
 export default function WhisperCard({ 
   id, content, college, branch, timestamp, likes, commentsCount, comments = [], 
-  isLiked, targetPerson, anonymousName, role, userCollege, onLike, onComment, onDelete, onFlag 
+  isLiked, targetPerson, anonymousName, creatorId, role, userCollege, onLike, onComment, onDelete, onFlag 
 }: WhisperCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
+  const { sendChatRequest, user: currentUser } = useChat();
+
+  const handleChatRequest = async () => {
+    if (!currentUser) {
+      alert('Please login to send chat requests!');
+      return;
+    }
+    if (creatorId) {
+      try {
+        await sendChatRequest(creatorId, currentUser.anonymousName || 'Anonymous');
+        alert(`Chat request sent to ${anonymousName}! It will persist in their lobby for 24 hours.`);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to send request.";
+        alert(message);
+      }
+    }
+  };
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +95,18 @@ export default function WhisperCard({
           <button className={styles.actionBtn} onClick={() => setIsExpanded(true)}>
             <MessageCircle size={20} /> <span>{commentsCount}</span>
           </button>
+          
+          {creatorId && currentUser && (currentUser._id !== creatorId && currentUser.id !== creatorId) && (
+            <button 
+              className={`${styles.actionBtn} ${styles.chatBtn}`} 
+              onClick={(e) => { e.stopPropagation(); handleChatRequest(); }}
+              title="Request Anonymous Chat"
+              style={{ color: 'var(--color-romantic-red)' }}
+            >
+              <Flame size={20} />
+              <span className={styles.chatLabel}>Chat</span>
+            </button>
+          )}
           
           {(role === 'super_admin' || (role === 'admin' && college === userCollege)) && (
             <div className={styles.adminActions}>

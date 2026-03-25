@@ -50,6 +50,9 @@ export default function Navbar() {
         <Link href="/whispers" className={`${styles.link} ${pathname === '/whispers' ? styles.active : ''}`}>
           Whispers
         </Link>
+        <Link href="/chat" className={`${styles.link} ${pathname === '/chat' ? styles.active : ''}`}>
+          Lobby
+        </Link>
 
         {(user?.role === 'admin' || user?.role === 'super_admin') && (
           <Link href="/admin" className={`${styles.link} ${pathname === '/admin' ? styles.active : ''}`}>
