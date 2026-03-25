@@ -9,6 +9,7 @@ import styles from './Navbar.module.css';
 interface User {
   _id?: string;
   anonymousName?: string;
+  role?: string;
 }
 
 export default function Navbar() {
@@ -49,6 +50,12 @@ export default function Navbar() {
         <Link href="/whispers" className={`${styles.link} ${pathname === '/whispers' ? styles.active : ''}`}>
           Whispers
         </Link>
+
+        {(user?.role === 'admin' || user?.role === 'super_admin') && (
+          <Link href="/admin" className={`${styles.link} ${pathname === '/admin' ? styles.active : ''}`}>
+            Admin
+          </Link>
+        )}
         
         {user ? (
           <Link href="/profile" className={`${styles.profileLink} ${pathname === '/profile' ? styles.active : ''}`}>

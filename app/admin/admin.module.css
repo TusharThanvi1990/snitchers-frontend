@@ -1,0 +1,252 @@
+.adminContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem 4rem;
+  min-height: 100vh;
+}
+
+.header {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: var(--color-romantic-red);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.statCard {
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-5px);
+}
+
+.sectionTitle svg {
+  color: var(--color-romantic-red);
+}
+
+/* User Management Table Styles */
+.userTableContainer {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 400px;
+  transition: all 0.3s ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--color-romantic-red);
+  box-shadow: 0 0 0 3px rgba(255, 123, 153, 0.1);
+}
+
+.searchBox input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 1rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.03);
+}
+
+.table td {
+  padding: 1.2rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+  font-size: 0.95rem;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.superAdminBadge {
+  color: #8b5cf6;
+}
+
+.roleBadge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.roleBadge.super_admin { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+.roleBadge.admin { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.roleBadge.user { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+
+.statusBadge {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.statusBadge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.statusBadge.active { color: #10b981; }
+.statusBadge.active::before { background: #10b981; }
+.statusBadge.suspended { color: #ef4444; }
+.statusBadge.suspended::before { background: #ef4444; }
+
+.suspendedRow {
+  background: rgba(239, 68, 68, 0.02);
+  color: #999;
+}
+
+.rowActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.iconAction {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  width: 32px;
+  height: 32px;
+  border-radius: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.iconAction:hover {
+  border-color: var(--color-romantic-red);
+  color: var(--color-romantic-red);
+  transform: translateY(-2px);
+}
+
+.deleteAction:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .userTableContainer {
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+}
+
+.statIcon {
+  color: var(--color-romantic-red);
+}
+
+.statValue {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.section {
+  margin-top: 4rem;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.noAccess {
+  text-align: center;
+  padding: 10rem 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 10rem 2rem;
+  font-style: italic;
+  color: var(--color-romantic-red);
+}
+
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

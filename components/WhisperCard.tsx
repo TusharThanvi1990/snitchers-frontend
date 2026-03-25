@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Target, Quote, X, Send } from 'lucide-react';
+import { Heart, MessageCircle, Target, Quote, X, Send, Trash2, Flag } from 'lucide-react';
 import styles from '@/app/whispers/whispers.module.css';
 
 interface WhisperCardProps {
@@ -14,11 +14,18 @@ interface WhisperCardProps {
   isLiked?: boolean;
   targetPerson?: string;
   anonymousName?: string;
+  role?: string;
+  userCollege?: string;
   onLike: (id: string) => void;
   onComment: (id: string, text: string) => void;
+  onDelete?: (id: string) => void;
+  onFlag?: (id: string) => void;
 }
 
-export default function WhisperCard({ id, content, college, branch, timestamp, likes, commentsCount, comments = [], isLiked, targetPerson, anonymousName, onLike, onComment }: WhisperCardProps) {
+export default function WhisperCard({ 
+  id, content, college, branch, timestamp, likes, commentsCount, comments = [], 
+  isLiked, targetPerson, anonymousName, role, userCollege, onLike, onComment, onDelete, onFlag 
+}: WhisperCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
 
@@ -68,6 +75,25 @@ export default function WhisperCard({ id, content, college, branch, timestamp, l
           <button className={styles.actionBtn} onClick={() => setIsExpanded(true)}>
             <MessageCircle size={20} /> <span>{commentsCount}</span>
           </button>
+          
+          {(role === 'super_admin' || (role === 'admin' && college === userCollege)) && (
+            <div className={styles.adminActions}>
+              <button 
+                className={`${styles.actionBtn} ${styles.flagBtn}`} 
+                onClick={(e) => { e.stopPropagation(); onFlag?.(id); }}
+                title="Flag Whisper"
+              >
+                <Flag size={18} />
+              </button>
+              <button 
+                className={`${styles.actionBtn} ${styles.deleteBtn}`} 
+                onClick={(e) => { e.stopPropagation(); onDelete?.(id); }}
+                title="Delete Whisper"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

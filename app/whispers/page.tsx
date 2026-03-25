@@ -19,12 +19,15 @@ interface Whisper {
   likesCount: number;
   commentsCount?: number;
   comments?: { text: string; createdAt: string }[];
+  isFlagged?: boolean;
 }
 
 interface User {
   _id?: string;
   id?: string;
   likedWhispers?: string[];
+  role?: string;
+  college?: string;
 }
 
 function WhispersContent() {
@@ -169,6 +172,46 @@ function WhispersContent() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to erase this secret forever?')) return;
+    
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiBaseUrl}/api/whispers/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        setWhispers(prev => prev.filter(w => w._id !== id));
+      } else {
+        const data = await res.json();
+        alert(data.message || 'The shadows refused to erase this secret.');
+      }
+    } catch (error) {
+      console.error('Delete Error:', error);
+    }
+  };
+
+  const handleFlag = async (id: string) => {
+    try {
+      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${apiBaseUrl}/api/whispers/${id}/flag`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        setWhispers(prev => prev.map(w => w._id === id ? { ...w, isFlagged: true } : w));
+        alert('Whisper flagged for moderation.');
+      }
+    } catch (error) {
+      console.error('Flag Error:', error);
+    }
+  };
+
   useEffect(() => {
     if (!loading && filteredWhispers.length > 0) {
       // Only re-animate the entire grid if the search query or whisper count changes.
@@ -228,8 +271,12 @@ function WhispersContent() {
               isLiked={user?.likedWhispers?.includes(whisper._id)}
               targetPerson={whisper.targetPerson}
               anonymousName={whisper.user?.anonymousName}
+              role={user?.role}
+              userCollege={user?.college}
               onLike={handleLike}
               onComment={handleComment}
+              onDelete={handleDelete}
+              onFlag={handleFlag}
             />
           ))}
         </div>

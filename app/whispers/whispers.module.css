@@ -510,6 +510,39 @@
   opacity: 0.8;
 }
 
+.adminActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+  padding-left: 0.8rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.flagBtn:hover {
+  color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.1) !important;
+}
+
+.deleteBtn:hover {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.flaggedCard {
+  opacity: 0.7;
+  border: 1px dashed #f59e0b !important;
+}
+
+@media (max-width: 600px) {
+  .adminActions {
+    border-left: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
 @media (max-width: 900px) {
   .expandedCard {
     flex-direction: column;
