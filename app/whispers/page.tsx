@@ -32,10 +32,21 @@ function WhispersContent() {
   const [whispers, setWhispers] = useState<Whisper[]>([]);
   const [filteredWhispers, setFilteredWhispers] = useState<Whisper[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500); // 500ms debounce
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
 
   useEffect(() => {
     if (searchParams.get('create') === 'true') {
@@ -76,13 +87,13 @@ function WhispersContent() {
   useEffect(() => {
     const filtered = whispers.filter(w => 
       w && w.content && (
-        w.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (w.user?.college && w.user.college.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (w.targetPerson && w.targetPerson.toLowerCase().includes(searchQuery.toLowerCase()))
+        w.content.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) ||
+        (w.user?.college && w.user.college.toLowerCase().includes(debouncedSearchQuery.toLowerCase())) ||
+        (w.targetPerson && w.targetPerson.toLowerCase().includes(debouncedSearchQuery.toLowerCase()))
       )
     );
     setFilteredWhispers(filtered);
-  }, [searchQuery, whispers]);
+  }, [debouncedSearchQuery, whispers]);
 
   const handleLike = async (id: string) => {
     if (!user) {
