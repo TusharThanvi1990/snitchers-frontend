@@ -37,6 +37,7 @@ function WhispersContent() {
   const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const gridIdRef = useRef<string>('');
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -101,28 +102,49 @@ function WhispersContent() {
       return;
     }
 
+    // Optimistic UI Update
+    const isCurrentlyLiked = user?.likedWhispers?.includes(id);
+    const updatedLikedWhispers = isCurrentlyLiked 
+      ? user?.likedWhispers?.filter(wid => wid !== id) 
+      : [...(user?.likedWhispers || []), id];
+    
+    const previousWhispers = [...whispers];
+    const previousUser = user ? { ...user } : null;
+
+    // Apply optimistic changes
+    setWhispers(prev => prev.map(w => 
+      w._id === id ? { ...w, likesCount: isCurrentlyLiked ? Math.max(0, w.likesCount - 1) : w.likesCount + 1 } : w
+    ));
+    if (user) {
+      setUser({ ...user, likedWhispers: updatedLikedWhispers });
+    }
+
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
       const res = await fetch(`${apiBaseUrl}/api/whispers/${id}/like`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user._id })
+        body: JSON.stringify({ userId: user?._id || user?.id })
       });
       const data = await res.json();
       
       if (res.ok && data.whisper) {
-        // Update whispers list safely: only update the count to preserve the populated user info
+        // Confirm server state
         setWhispers(prev => prev.map(w => w._id === id ? { ...w, likesCount: data.whisper.likesCount } : w));
-        
-        // Update user state and storage
         if (data.user) {
           setUser(data.user);
           localStorage.setItem('user', JSON.stringify(data.user));
         }
       } else {
+        // Rollback on server error
+        setWhispers(previousWhispers);
+        if (previousUser) setUser(previousUser);
         console.error('Like toggle failed:', data.message);
       }
     } catch (error) {
+      // Rollback on connection error
+      setWhispers(previousWhispers);
+      if (previousUser) setUser(previousUser);
       console.error('Failed to toggle like:', error);
     }
   };
@@ -149,12 +171,18 @@ function WhispersContent() {
 
   useEffect(() => {
     if (!loading && filteredWhispers.length > 0) {
-      gsap.fromTo(`.${styles.card}`, 
-        { opacity: 0, scale: 0.95, y: 30 }, 
-        { opacity: 1, scale: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' }
-      );
+      // Only re-animate the entire grid if the search query or whisper count changes.
+      // Simple interactions like liking or commenting shouldn't trigger the staggered entrance.
+      const currentGridId = `${debouncedSearchQuery}-${filteredWhispers.length}`;
+      if (gridIdRef.current !== currentGridId) {
+        gsap.fromTo(`.${styles.card}`, 
+          { opacity: 0, scale: 0.95, y: 30 }, 
+          { opacity: 1, scale: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power3.out' }
+        );
+        gridIdRef.current = currentGridId;
+      }
     }
-  }, [loading, filteredWhispers]);
+  }, [loading, filteredWhispers.length, debouncedSearchQuery]);
 
   return (
     <div className={styles.container}>
