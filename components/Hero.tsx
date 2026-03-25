@@ -1,12 +1,30 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Send } from 'lucide-react';
 import gsap from 'gsap';
 import styles from '@/app/page.module.css';
 
+interface User {
+  _id: string;
+  anonymousName: string;
+}
+
 export default function Hero() {
+  const [user] = useState<User | null>(() => {
+    if (typeof window !== 'undefined') {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser && storedUser !== 'undefined' && storedUser !== 'null') {
+        try {
+          return JSON.parse(storedUser);
+        } catch (e) {
+          console.error("Failed to parse user in Hero", e);
+        }
+      }
+    }
+    return null;
+  });
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -39,9 +57,9 @@ export default function Hero() {
       </div>
 
       <div className={styles.ctaContainer} ref={ctaRef}>
-        <Link href="/signin">
+        <Link href={user ? "/whispers?create=true" : "/signin"}>
           <button className={styles.primaryButton}>
-            Start Confessing <Send size={18} />
+            {user ? "Share a Secret" : "Start Confessing"} <Send size={18} />
           </button>
         </Link>
         <Link href="/whispers">

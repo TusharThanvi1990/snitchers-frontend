@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, MessageCircle, Share2, Target, Quote, X, Send } from 'lucide-react';
+import { Heart, MessageCircle, Target, Quote, X, Send } from 'lucide-react';
 import styles from '@/app/whispers/whispers.module.css';
 
 interface WhisperCardProps {

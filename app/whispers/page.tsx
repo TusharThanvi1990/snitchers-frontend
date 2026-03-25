@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, PlusCircle } from 'lucide-react';
 import gsap from 'gsap';
@@ -26,7 +27,8 @@ interface User {
   likedWhispers?: string[];
 }
 
-export default function WhispersPage() {
+function WhispersContent() {
+  const searchParams = useSearchParams();
   const [whispers, setWhispers] = useState<Whisper[]>([]);
   const [filteredWhispers, setFilteredWhispers] = useState<Whisper[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +36,12 @@ export default function WhispersPage() {
   const [user, setUser] = useState<User | null>(null);
   const [showModal, setShowModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (searchParams.get('create') === 'true') {
+      setShowModal(true);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     try {
@@ -200,5 +208,13 @@ export default function WhispersPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function WhispersPage() {
+  return (
+    <Suspense fallback={<div>Loading whispers...</div>}>
+      <WhispersContent />
+    </Suspense>
   );
 }
