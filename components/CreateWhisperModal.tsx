@@ -73,7 +73,7 @@ export default function CreateWhisperModal({ onClose, onSuccess }: CreateWhisper
           <div className={styles.inputGroup}>
             <label>Your Whisper</label>
             <textarea 
-              placeholder="What's on your heart? (e.g. 'I still think about that day at the cafe...')"
+              placeholder="What&apos;s on your heart? (e.g. &apos;I still think about that day at the cafe...&apos;)"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               required

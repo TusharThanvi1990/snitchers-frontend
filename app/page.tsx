@@ -1,19 +1,21 @@
 import React from 'react';
-import { ChevronDown } from 'lucide-react';
-import styles from '@/app/page.module.css';
-import FloatingHearts from '@/components/FloatingHearts';
-import Hero from '@/components/Hero';
-import Features from '@/components/Features';
+import styles from '@/app/landing.module.css';
+import Header from '@/components/Landing/Header';
+import HeroSection from '@/components/Landing/HeroSection';
+import BentoGrid from '@/components/Landing/BentoGrid';
+import PremiumReveal from '@/components/Landing/PremiumReveal';
+import Footer from '@/components/Landing/Footer';
+import BottomNav from '@/components/Landing/BottomNav';
 
 export default function LandingPage() {
   return (
-    <main className={styles.hero}>
-      <FloatingHearts />
-      <Hero />
-      <div className={styles.scrollDown}>
-        <ChevronDown size={32} />
-      </div>
-      <Features />
+    <main className={styles.landingMain}>
+      <Header />
+      <HeroSection />
+      <BentoGrid />
+      <PremiumReveal />
+      <Footer />
+      <BottomNav />
     </main>
   );
 }

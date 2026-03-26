@@ -39,6 +39,8 @@ export default function Navbar() {
     return () => window.removeEventListener('storage', handleStorage);
   }, [pathname]);
 
+  if (pathname === '/') return null;
+
   return (
     <nav className={`${styles.navbar} glass-card`}>
       <Link href="/" className={styles.logo}>

@@ -1,24 +1,78 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@100..900&display=swap');
 
 :root {
-  /* Color Palette - Romantic & Happy */
+  /* Existing Palette */
   --color-romantic-red: #d63447;
   --color-soft-pink: #f67280;
   --color-warm-cream: #f9f7f7;
   --color-deep-purple: #3f3250;
   --color-gold: #ffb400;
   
-  --bg-primary: #fffaf0; /* Warm Floral White */
-  --text-primary: #2d3436;
-  --text-muted: #636e72;
+  /* New Design System Tokens */
+  --surface-bright: #fef9ef;
+  --primary-container: #d63447;
+  --tertiary-container: #996b00;
+  --on-tertiary-fixed-variant: #5f4100;
+  --outline-variant: #e2bebd;
+  --surface-tint: #b81b34;
+  --outline: #8e706f;
+  --on-tertiary: #ffffff;
+  --surface-variant: #e7e2d8;
+  --on-secondary-container: #6b5c7d;
+  --error: #ba1a1a;
+  --on-primary-fixed-variant: #920022;
+  --on-primary-container: #fff9f8;
+  --inverse-on-surface: #f5f0e6;
+  --primary-fixed: #ffdad9;
+  --tertiary-fixed: #ffdeac;
+  --on-secondary-fixed-variant: #4e4160;
+  --secondary: #675879;
+  --on-background: #1d1c16;
+  --on-error: #ffffff;
+  --surface-container-lowest: #ffffff;
+  --on-tertiary-fixed: #281900;
+  --error-container: #ffdad6;
+  --on-tertiary-container: #fffaf8;
+  --on-primary-fixed: #40000a;
+  --surface: #fef9ef;
+  --inverse-surface: #32302a;
+  --background: #fef9ef;
+  --secondary-container: #ebd8ff;
+  --surface-container-low: #f8f3e9;
+  --primary-fixed-dim: #ffb3b3;
+  --surface-container-high: #ece8de;
+  --on-surface: #1d1c16;
+  --secondary-fixed-dim: #d1bfe5;
+  --tertiary-fixed-dim: #ffba35;
+  --surface-container: #f2ede4;
+  --on-primary: #ffffff;
+  --inverse-primary: #ffb3b3;
+  --surface-container-highest: #e7e2d8;
+  --secondary-fixed: #eddcff;
+  --on-surface-variant: #5a4040;
+  --tertiary: #7a5400;
+  --on-error-container: #93000a;
+  --surface-dim: #dedad0;
+  --on-secondary: #ffffff;
+  --primary: #b31631;
+  --on-secondary-fixed: #221632;
+
+  /* Typography */
+  --font-headline: 'Noto Serif', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-label: 'Plus Jakarta Sans', sans-serif;
+  
+  --bg-primary: var(--surface-bright);
+  --text-primary: var(--on-surface);
+  --text-muted: var(--on-surface-variant);
   
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.4);
   --glass-border: rgba(255, 255, 255, 0.2);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
   
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Outfit", sans-serif;
+  --font-serif: var(--font-headline);
+  --font-sans: var(--font-body);
   
   --transition-smooth: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -51,52 +105,29 @@ li {
   list-style: none;
 }
 
-/* Glassmorphism Utilities */
 .glass-card {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  border-radius: 24px;
+  border-radius: 1rem;
 }
 
-.romantic-gradient {
+.signature-gradient {
   background: linear-gradient(135deg, #f67280 0%, #c06c84 50%, #6c5b7b 100%);
 }
 
-.romantic-shine {
-  position: relative;
-  overflow: hidden;
-}
-
-.romantic-shine::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
-  transform: scale(0);
-  transition: transform 0.6s ease;
-  pointer-events: none;
-}
-
-.romantic-shine:hover::after {
-  transform: scale(1);
-}
-
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px) rotate(3deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+  100% { transform: translateY(0px) rotate(3deg); }
 }
 
-.floating {
+.animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
 .content-wrapper {
-  padding-top: 100px;
+  padding-top: 80px; /* Adjusted for new header height */
 }
